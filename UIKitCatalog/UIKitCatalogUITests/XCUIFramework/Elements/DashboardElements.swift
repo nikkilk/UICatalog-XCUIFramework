@@ -12,20 +12,28 @@ import XCTest
 
 class DashboardElements: UITestBase {
     
-    lazy var activityIndicatorsText: XCUIElement = app.staticTexts[""].firstMatch
+    private let dashboardLocators: [String: String]
     
-    lazy var alertViewsText: XCUIElement = app.staticTexts[""].firstMatch
+    // Initialize dashboardLocators in the constructor
+    override init() {
+        dashboardLocators = try! FileParser.loadAndParseJson(filePath: "KPMobile/KaiserPermanenteUITests/XCUIFramework/Locators/Dashboard.json")
+        super.init()
+    }
     
-    lazy var buttonsText: XCUIElement = app.staticTexts[""].firstMatch
+    // Define a helper method to create XCUIElement properties
+    private func createTextElement(for key: String) -> XCUIElement {
+        return app.staticTexts[dashboardLocators[key] ?? ""].firstMatch
+    }
     
-    lazy var datePickerText: XCUIElement = app.staticTexts[""].firstMatch
-    
-    lazy var pageControlText: XCUIElement = app.staticTexts[""].firstMatch
-    
-    lazy var pickerViewText: XCUIElement = app.staticTexts[""].firstMatch
-    
-    lazy var progressViewsText: XCUIElement = app.staticTexts[""].firstMatch
-    
+    // Use the helper method to create properties for each UI element
+    lazy var activityIndicatorsText: XCUIElement = createTextElement(for: "ActivityIndicators")
+    lazy var alertViewsText: XCUIElement = createTextElement(for: "AlertViews")
+    lazy var buttonsText: XCUIElement = createTextElement(for: "Buttons")
+    lazy var datePickerText: XCUIElement = createTextElement(for: "DatePicker")
+    lazy var pageControlText: XCUIElement = createTextElement(for: "PageControl")
+    lazy var pickerViewText: XCUIElement = createTextElement(for: "PickerView")
+    lazy var progressViewsText: XCUIElement = createTextElement(for: "ProgressViews")
+
     lazy var searchText: XCUIElement = app.staticTexts[""].firstMatch
     
     lazy var segmentedControlsText: XCUIElement = app.staticTexts[""].firstMatch

@@ -9,83 +9,72 @@
 import Foundation
 import XCTest
 
-
 protocol ElementUtils: UITestBase {
+    /// Taps on the specified XCUIElement.
+    /// - Parameters:
+    ///   - element: The XCUIElement to tap.
     func tapOnElement(element: XCUIElement)
+
+    /// Taps on the specified XCUIElement if it exists.
+    /// - Parameters:
+    ///   - element: The XCUIElement to tap.
     func tapOnElementIfExists(element: XCUIElement)
-    func isElementPresent(element: XCUIElement)
+
+    /// Checks if the specified XCUIElement is present.
+    /// - Parameters:
+    ///   - element: The XCUIElement to check for existence.
+    /// - Returns: True if the element is present, otherwise false.
+    func isElementPresent(element: XCUIElement) -> Bool
+
+    /// Sends text to the specified XCUIElement.
+    /// - Parameters:
+    ///   - element: The XCUIElement to send text to.
+    ///   - text: The text to be sent.
     func sendText(element: XCUIElement, text: String)
+
+    /// Simulates a continuous downward swipe until the specified XCUIElement becomes visible.
+    /// - Parameters:
+    ///   - element: The XCUIElement to monitor for visibility during the swipe.
     func swipeDownUntilElementVisible(element: XCUIElement)
-    func swipeUPUntilElementVisible(element: XCUIElement)
+
+    /// Simulates a continuous upward swipe until the specified XCUIElement becomes visible.
+    /// - Parameters:
+    ///   - element: The XCUIElement to monitor for visibility during the swipe.
+    func swipeUpUntilElementVisible(element: XCUIElement)
 }
 
-
 extension ElementUtils {
-    
-    // MARK: - Tap
-    
-    /// <#Description#>
-    /// - Parameter element: <#element description#>
     func tapOnElement(element: XCUIElement) {
         let elementExists = element.waitForExistence(timeout: ConstantUtils.implicitWait)
-        if element.exists {
-            element.tap()
-        } else {
-            XCTAssertTrue(elementExists, "\(element) not found")
-        }
+        XCTAssertTrue(elementExists, "Element \(element) not found")
+        element.tap()
     }
-    
-    
-    /// <#Description#>
-    /// - Parameter element: <#element description#>
+
     func tapOnElementIfExists(element: XCUIElement) {
-        let elementExists = element.waitForExistence(timeout: ConstantUtils.implicitWait)
-        if elementExists {
+        if element.waitForExistence(timeout: ConstantUtils.implicitWait) {
             element.tap()
         }
     }
-    
-    
-    // MARK: - Element
-    
-    /// <#Description#>
-    /// - Parameter element: <#element description#>
-    /// - Returns: <#description#>
-    func isElementPresent(element: XCUIElement)-> Bool {
-        if element.waitForExistence(timeout: ConstantUtils.implicitWait) {
-            return true
-        } else {
-            return false
-        }
+
+    func isElementPresent(element: XCUIElement) -> Bool {
+        return element.waitForExistence(timeout: ConstantUtils.implicitWait)
     }
-    
-    
-    /// <#Description#>
-    /// - Parameters:
-    ///   - element: <#element description#>
-    ///   - text: <#text description#>
+
     func sendText(element: XCUIElement, text: String) {
         tapOnElement(element: element)
         element.typeText(text)
     }
-    
-    
-    // MARK: - Swipe
-    
-    /// Simulates a continuous downward swipe until a specified XCUIElement becomes visible
-    /// - Parameter element: The XCUIElement to monitor for visibility during the swipe
+
     func swipeDownUntilElementVisible(element: XCUIElement) {
-        while !element.exists {
-            app.swipeUp()
-        }
-    }
-    
-    
-    /// Simulates a continuous upward swipe until a specified XCUIElement becomes visible
-    /// - Parameter element: The XCUIElement to monitor for visibility during the swipe
-    func swipeUPUntilElementVisible(element: XCUIElement) {
         while !element.exists {
             app.swipeDown()
         }
     }
+
+    func swipeUpUntilElementVisible(element: XCUIElement) {
+        while !element.exists {
+            app.swipeUp()
+        }
+    }
 }
+

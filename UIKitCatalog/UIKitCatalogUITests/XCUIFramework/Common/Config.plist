@@ -8,7 +8,7 @@
 	<string>Test</string>
 	<key>Language</key>
 	<string>english</string>
-	<key>ImpliciWait</key>
+	<key>ImplicitWait</key>
 	<integer>5</integer>
 	<key>ElementLoadWait</key>
 	<integer>30</integer>
